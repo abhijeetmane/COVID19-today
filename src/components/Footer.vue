@@ -22,7 +22,7 @@ export default {
       {
         name: "mdi-github",
         key: "github",
-        link: "https://github.com/abhijeetmane/go-corona/blob/master/README.md",
+        link: "https://github.com/abhijeetmane/COVID19-today/blob/master/README.md",
         target: "_blank"
       },
       {
