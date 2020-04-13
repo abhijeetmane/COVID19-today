@@ -1,11 +1,12 @@
 <template>
   <div class="graphs-container">
-    <v-icon size="24" class="icon-close" @click="closeFaq">mdi-close</v-icon>
-    <h3 class="d-flex justify-center">
-      Frequently Asked Questions &nbsp;&nbsp;
-      <v-icon size="24">mdi-head-question</v-icon>
-    </h3>
-
+    <div class="mb-2">
+      <v-icon size="24" class="icon-close" @click="closeFaq">mdi-close</v-icon>
+      <h4 class="d-flex justify-center">
+        Frequently Asked Questions &nbsp;&nbsp;
+        <v-icon size="24">mdi-head-question</v-icon>
+      </h4>
+    </div>
     <v-row class="justify-center align-center faq-box">
       <v-col
         class="d-flex justify-start align-start"
@@ -41,7 +42,7 @@ export default {
       },
 
       {
-        title: `<b>Why does <a href="http://www.thecovid19.today">thecovid19.today</a> has different count than other websites/sources?</b>`,
+        title: `<b>Why does <a href="https://thecovid19.today/">thecovid19.today</a> has different count than other websites/sources?</b>`,
         subtitle:
           "Sources used to gather information updates data at scheduled time and it may be different than other websites."
       },
@@ -86,15 +87,12 @@ export default {
 
 <style lang="scss" scoped>
 .graphs-container {
-  padding-top: 50px;
-  margin: 50px 3% 0 3%;
+  padding-top: 20px;
+  margin: 10px 3% 0 3%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 6px 15px rgba(36, 37, 38, 0.3);
   transition: box-shadow 0.25s ease, transform 0.25s ease;
-  height: calc(100vh - 185px);
-  overflow-y: auto;
-  overflow-x: hidden;
   .icon-close {
     float: right;
     margin-right: 3%;
@@ -106,9 +104,12 @@ export default {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .graphs-container {
-    height: calc(100vh - 193px);
+    margin-top: 20px;
+    height: calc(100vh - 164px);
+    overflow-y: auto;
+    overflow-x: hidden;
     .faq-box {
       margin: 0 auto;
       width: 65%;

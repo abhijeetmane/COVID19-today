@@ -1,37 +1,37 @@
 <template>
   <div>
     <v-container>
-      <v-row class="d-flex flex-row justify-center mb-6">
+      <v-row class="d-flex flex-row justify-center tile-row-container">
         <Tile
-          title="Cases"
+          :title="$t('cases')"
           :value="total.cases"
           color="white lighten-1"
           icon="mdi-ambulance"
           iconColor="deep-purple darken-2"
         />
         <Tile
-          title="Deaths"
+          :title="$t('deaths')"
           :value="total.deaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
           iconColor="pink darken-2"
         />
         <Tile
-          title="Recovered"
+          :title="$t('recovered')"
           :value="total.recovered"
           color="white lighten-1"
           icon="mdi-home-heart"
           iconColor="teal lighten-1"
         />
         <Tile
-          title="New Cases"
+          :title="$t('newCases')"
           :value="getNewCases"
           color="white lighten-1"
           icon="mdi-ambulance"
           iconColor="deep-purple lighten-1"
         />
         <Tile
-          title="New Deaths"
+          :title="$t('newDeaths')"
           :value="getNewDeaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
@@ -130,11 +130,11 @@ export default {
     Tile,
     BarChart
   },
-  mounted(){
-        this.$gtag.pageview({
-        page_title:'Graphs',
-        page_path: '/graphs',
-      });
+  mounted() {
+    this.$gtag.pageview({
+      page_title: "Graphs",
+      page_path: "/graphs"
+    });
   },
   methods: {
     onResize() {
@@ -151,13 +151,43 @@ export default {
   computed: {
     getSeries: function() {
       const series = {
-        cases: createSeries([...this.countries], 10, "cases"),
-        active: createSeries([...this.countries], 10, "active"),
-        deaths: createSeries([...this.countries], 10, "deaths"),
-        recovered: createSeries([...this.countries], 10, "recovered"),
-        critical: createSeries([...this.countries], 10, "critical"),
-        todayCases: createSeries([...this.countries], 10, "todayCases"),
-        todayDeaths: createSeries([...this.countries], 10, "todayDeaths")
+        cases: createSeries([...this.countries], 10, "cases", this.$t("cases")),
+        active: createSeries(
+          [...this.countries],
+          10,
+          "active",
+          this.$t("activeCases")
+        ),
+        deaths: createSeries(
+          [...this.countries],
+          10,
+          "deaths",
+          this.$t("deaths")
+        ),
+        recovered: createSeries(
+          [...this.countries],
+          10,
+          "recovered",
+          this.$t("recovered")
+        ),
+        critical: createSeries(
+          [...this.countries],
+          10,
+          "critical",
+          this.$t("criticalCases")
+        ),
+        todayCases: createSeries(
+          [...this.countries],
+          10,
+          "todayCases",
+          this.$t("todaysCases")
+        ),
+        todayDeaths: createSeries(
+          [...this.countries],
+          10,
+          "todayDeaths",
+          this.$t("todaysDeaths")
+        )
       };
       return series;
     },
@@ -167,43 +197,43 @@ export default {
           [...this.countries],
           10,
           "cases",
-          "Total Cases"
+          this.$t("totalCases")
         ),
         active: createCategories(
           [...this.countries],
           10,
           "active",
-          "Total Active Cases"
+          this.$t("totalActiveCases")
         ),
         deaths: createCategories(
           [...this.countries],
           10,
           "deaths",
-          "Total Deaths"
+          this.$t("totalDeaths")
         ),
         recovered: createCategories(
           [...this.countries],
           10,
           "recovered",
-          "Total Recovered"
+          this.$t("totalRecovered")
         ),
         critical: createCategories(
           [...this.countries],
           10,
           "critical",
-          "Total Critical"
+          this.$t("totalCritical")
         ),
         todayCases: createCategories(
           [...this.countries],
           10,
           "todayCases",
-          "Today's Cases"
+          this.$t("todaysCases")
         ),
         todayDeaths: createCategories(
           [...this.countries],
           10,
           "todayDeaths",
-          "Today's Deaths"
+          this.$t("todaysDeaths")
         )
       };
       return categories;
@@ -228,5 +258,10 @@ export default {
   border-radius: 8px;
   box-shadow: 0 6px 15px rgba(36, 37, 38, 0.3);
   transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+@media screen and (min-width: 768px) {
+  .tile-row-container {
+    margin-bottom: 24px;
+  }
 }
 </style>

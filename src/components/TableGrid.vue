@@ -1,7 +1,12 @@
 <template>
   <div>
-    <v-toolbar dark class="">
-      <v-menu bottom origin="center center" transition="scale-transition">
+    <v-toolbar dark>
+      <v-menu
+        bottom
+        origin="center center"
+        transition="scale-transition"
+        offset-x
+      >
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
             <v-icon>mdi-sort</v-icon>
@@ -9,7 +14,7 @@
         </template>
         <v-list>
           <v-list-item
-            v-for="item in headers"
+            v-for="item in computedHeaders"
             :key="item.text"
             @click="changeSort(item.value)"
           >
@@ -26,7 +31,7 @@
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        placeholder="Search Country"
+        :placeholder="$t('searchCountry')"
         hide-details
       ></v-text-field>
     </v-toolbar>
@@ -51,8 +56,8 @@
             }"
           >
             <template v-slot:item="props">
-              <tr @click="handleClick(props.item.country)">
-                <td :class="'country-name'">{{ props.item.country }}</td>
+              <tr @click="handleClick(props.item)">
+                <td :class="'country-name'">{{ $t(props.item.country) }}</td>
                 <td>{{ props.item.cases }}</td>
                 <td
                   v-if="!$vuetify.breakpoint.smAndDown"
@@ -74,6 +79,18 @@
                 <td v-if="!$vuetify.breakpoint.smAndDown">
                   {{ props.item.critical }}
                 </td>
+                <td
+                  v-if="!$vuetify.breakpoint.smAndDown"
+                  class="font-weight-bold deep-purple--text"
+                >
+                  {{ props.item.casesPerOneMillion }}
+                </td>
+                <td
+                  v-if="!$vuetify.breakpoint.smAndDown"
+                  class="font-weight-bold pink--text"
+                >
+                  {{ props.item.deathsPerOneMillion }}
+                </td>
               </tr>
             </template>
           </v-data-table>
@@ -94,20 +111,30 @@ export default {
       isMobile: this.checkMobile,
       search: "",
       headers: [
-        { text: "Country", value: "country" },
-        { text: "Cases", value: "cases" },
-        { text: "New Cases", value: "todayCases", hide: "smAndDown" },
-        { text: "Deaths", value: "deaths" },
-        { text: "New Deaths", value: "todayDeaths", hide: "smAndDown" },
-        { text: "Recovered", value: "recovered" },
-        { text: "Active Cases", value: "active", hide: "smAndDown" },
-        { text: "Critical Cases", value: "critical", hide: "smAndDown" }
+        { text: "country", value: "country" },
+        { text: "cases", value: "cases" },
+        { text: "newCases", value: "todayCases", hide: "smAndDown" },
+        { text: "deaths", value: "deaths" },
+        { text: "newDeaths", value: "todayDeaths", hide: "smAndDown" },
+        { text: "recovered", value: "recovered" },
+        { text: "activeCases", value: "active", hide: "smAndDown" },
+        { text: "criticalCases", value: "critical", hide: "smAndDown" },
+        {
+          text: "casesPerOneMillion",
+          value: "casesPerOneMillion",
+          hide: "smAndDown"
+        },
+        {
+          text: "deathsPerOneMillion",
+          value: "deathsPerOneMillion",
+          hide: "smAndDown"
+        }
       ]
     };
   },
   methods: {
-    handleClick: function(country) {
-      this.$emit("navigateCountry", country);
+    handleClick: function(item) {
+      this.$emit("navigateCountry", item);
     },
     onResize() {
       if (window.innerWidth < 769) this.isMobile = true;
@@ -127,18 +154,14 @@ export default {
       return window.innerWidth < 769;
     },
     computedHeaders() {
-      return this.headers.filter(
-        h => !h.hide || !this.$vuetify.breakpoint[h.hide]
-      );
+      return this.headers
+        .filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide])
+        .map(h => ({ ...h, text: this.$t(h.text) }));
     }
   }
 };
 </script>
 <style lang="scss">
-.table-search-bar {
-  background: linear-gradient(to right, #0acffe 0%, #495aff 100%);
-  // background: #000000;
-}
 .v-card:not(.v-sheet--tile):not(.v-card--shaped) {
   border-radius: 0;
 }
@@ -172,6 +195,10 @@ export default {
           td {
             padding: 0 8px;
             font-size: 0.9rem;
+            &.country-name {
+              text-decoration: underline;
+              color: #337ab7;
+            }
           }
         }
       }
@@ -196,6 +223,7 @@ export default {
               font-size: 0.7rem;
               &.country-name {
                 max-width: 100px;
+                min-width: 100px;
                 // white-space: pre;
                 // overflow: auto;
               }

@@ -19,7 +19,7 @@ const routes = [
       import(/* webpackChunkName: "Charts" */ "../views/Graphs.vue")
   },
   {
-    path: "/countries/:name",
+    path: "/countries/:code",
     name: "Country",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

@@ -51,13 +51,13 @@
       class="ma-5 mt-0"
       dark
       width="100%"
-      v-if="newsItems.length"
+      v-if="showLoadMore"
     >
       <v-card-actions
         @click="nextArticles"
         class="d-flex flex-no-wrap justify-center pointer"
       >
-        <span class="black--text">Load More</span>
+        <span class="black--text">{{ $t("loadMore") }}</span>
         <v-btn icon>
           <v-icon color="black">mdi-arrow-down-bold</v-icon>
         </v-btn>
@@ -78,7 +78,8 @@
 import { formatDateTime } from "../utilities/dateUtility";
 export default {
   props: {
-    newsItems: Array
+    newsItems: Array,
+    showLoadMore: Boolean
   },
   methods: {
     formatPublishDate: function(date) {

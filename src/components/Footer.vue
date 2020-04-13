@@ -2,7 +2,7 @@
   <div>
     <v-footer dark padless class="app-footer black">
       <v-btn
-        class="mx-4 white--text black"
+        class="white--text black app-footer__btn"
         :key="icon.key"
         v-for="icon in options"
         :href="icon.link"
@@ -22,7 +22,8 @@ export default {
       {
         name: "mdi-github",
         key: "github",
-        link: "https://github.com/abhijeetmane/COVID19-today/blob/master/README.md",
+        link:
+          "https://github.com/abhijeetmane/COVID19-today/blob/master/README.md",
         target: "_blank"
       },
       {
@@ -69,5 +70,15 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
+  .app-footer__btn {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+  @media screen and (max-width: 340px) {
+    .app-footer__btn {
+      margin-right: 8px;
+      margin-left: 8px;
+    }
+  }
 }
 </style>

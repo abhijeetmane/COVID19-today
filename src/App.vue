@@ -2,7 +2,11 @@
   <v-app>
     <div class="app-container">
       <NavBar />
-      <v-content v-if="loading"> <div class="skelton-height"></div></v-content>
+      <v-content v-if="loading">
+        <div class="skelton-height d-flex justify-center align-center">
+          <span>{{ $t(message) }}</span>
+        </div></v-content
+      >
       <v-content v-else>
         <router-view :total="total" :countries="countries" />
         <v-btn
@@ -14,6 +18,7 @@
           color="grey darken-3"
           small
           @click="scrollToTop"
+          class="scroll-top-btn"
         >
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
@@ -35,6 +40,7 @@ export default {
     Footer
   },
   data: () => ({
+    message: "loading",
     loading: true,
     error: false,
     total: {},
@@ -50,10 +56,10 @@ export default {
     }
   },
   mounted() {
-      this.$gtag.pageview({
-        page_title:'Home',
-        page_path: '/',
-      });
+    this.$gtag.pageview({
+      page_title: "Home",
+      page_path: "/"
+    });
     Axios.get(API_GET_OVERVIEW)
       .then(response => {
         this.total = response.data;
@@ -63,6 +69,7 @@ export default {
       .catch(() => {
         this.error = true;
         this.loading = false;
+        this.message = "noDataAvailable";
       });
 
     Axios.get(API_GET_COUNTRIES)
@@ -73,6 +80,7 @@ export default {
       .catch(() => {
         this.error = true;
         this.loading = false;
+        this.message = "noDataAvailable";
       });
   }
 };
@@ -91,7 +99,12 @@ body,
   width: 100%;
   box-shadow: inset 0px 0px 100px 100px rgba(36, 70, 105, 0.74);
   .skelton-height {
-    height: calc(100vh - 148px);
+    height: calc(100vh - 136px);
+    background-color: #ffffff;
+    margin: 0 3%;
+  }
+  .scroll-top-btn {
+    bottom: 50px;
   }
 }
 </style>

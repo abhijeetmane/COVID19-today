@@ -1,21 +1,21 @@
 <template>
   <v-col>
     <v-sheet
-      class="ow ma-1 pa-1 justify-center align-center tile-shadow"
+      class="row ma-2 pa-1 justify-center align-center tile-shadow"
       :color="color"
     >
       <div class="d-flex justify-center align-center">
         <div class="tile-icon">
-          <v-icon size="30" :color="iconColor">{{ icon }} </v-icon>
+          <v-icon size="28" :color="iconColor">{{ icon }} </v-icon>
         </div>
         <div class="tiles-body">
           <div>
-            <span class="black--text font-weight-bold v-rating">{{
+            <span class="black--text font-weight-bold v-rating subtitle-2">{{
               title
             }}</span>
           </div>
           <div>
-            <span class="black--text font-weight-bold v-rating">{{
+            <span class="black--text font-weight-medium v-rating subtitle-2">{{
               value
             }}</span>
           </div>
@@ -39,7 +39,7 @@ export default {
 
 <style lang="scss" scoped>
 .tile-shadow {
-  box-shadow: 0 6px 15px rgba(36, 37, 38, 0.08);
+  box-shadow: 0 6px 15px rgba(36, 37, 38, 0.5);
   border-radius: 8px;
   overflow: hidden;
   transition: box-shadow 0.25s ease, transform 0.25s ease;

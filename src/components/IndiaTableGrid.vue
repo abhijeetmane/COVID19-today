@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-toolbar dark>
-      <v-menu bottom origin="center center" transition="scale-transition">
+      <v-menu
+        bottom
+        origin="center center"
+        transition="scale-transition"
+        offset-x
+      >
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
             <v-icon>mdi-sort</v-icon>
@@ -9,7 +14,7 @@
         </template>
         <v-list>
           <v-list-item
-            v-for="item in headers"
+            v-for="item in computedHeaders"
             :key="item.text"
             @click="changeSort(item.value)"
           >
@@ -26,7 +31,7 @@
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        placeholder="Search State"
+        :placeholder="$t('searchState')"
         hide-details
       ></v-text-field>
     </v-toolbar>
@@ -47,7 +52,7 @@
           >
             <template v-slot:item="props">
               <tr>
-                <td :class="'country-name'">{{ props.item.state }}</td>
+                <td :class="'country-name'">{{ $t(props.item.state) }}</td>
                 <td>{{ props.item.confirmed }}</td>
                 <td v-if="!$vuetify.breakpoint.smAndDown">
                   {{ props.item.active }}
@@ -85,13 +90,13 @@ export default {
       sortDesc: true,
       search: "",
       headers: [
-        { text: "States", value: "state" },
-        { text: "Cases", value: "confirmed" },
-        { text: "Active Cases", value: "active", hide: "smAndDown" },
-        { text: "New Cases", value: "deltaconfirmed", hide: "smAndDown" },
-        { text: "Deaths", value: "deaths" },
-        { text: "New Deaths", value: "deltadeaths", hide: "smAndDown" },
-        { text: "Recovered", value: "recovered" }
+        { text: "states", value: "state" },
+        { text: "cases", value: "confirmed" },
+        { text: "activeCases", value: "active", hide: "smAndDown" },
+        { text: "newCases", value: "deltaconfirmed", hide: "smAndDown" },
+        { text: "deaths", value: "deaths" },
+        { text: "newDeaths", value: "deltadeaths", hide: "smAndDown" },
+        { text: "recovered", value: "recovered" }
       ]
     };
   },
@@ -107,9 +112,9 @@ export default {
   },
   computed: {
     computedHeaders() {
-      return this.headers.filter(
-        h => !h.hide || !this.$vuetify.breakpoint[h.hide]
-      );
+      return this.headers
+        .filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide])
+        .map(h => ({ ...h, text: this.$t(h.text) }));
     }
   }
 };

@@ -18,46 +18,60 @@
           <div
             class="d-flex headline white--text font-weight-bold text-capitalize"
           >
-            {{ country }}
+            {{ $t(country) }}
           </div>
         </v-col>
       </v-row>
 
       <v-row class="d-flex flex-row justify-center">
         <Tile
-          title="Cases"
+          :title="$t('cases')"
           :value="cases"
           color="white lighten-1"
           icon="mdi-ambulance"
           iconColor="deep-purple darken-2"
         />
         <Tile
-          title="Deaths"
+          :title="$t('deaths')"
           :value="deaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
           iconColor="pink darken-2"
         />
         <Tile
-          title="Recovered"
+          :title="$t('recovered')"
           :value="recovered"
           color="white lighten-1"
           icon="mdi-home-heart"
           iconColor="teal lighten-1"
         />
         <Tile
-          title="New Cases"
+          :title="$t('todaysCases')"
           :value="todayCases"
           color="white lighten-1"
           icon="mdi-ambulance"
           iconColor="deep-purple lighten-1"
         />
         <Tile
-          title="New Deaths"
+          :title="$t('todaysDeaths')"
           :value="todayDeaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
           iconColor="pink lighten-1"
+        />
+        <Tile
+          :title="$t('casesPerOneMillion')"
+          :value="casesPerOneMillion"
+          color="white lighten-1"
+          icon="mdi-account-group"
+          iconColor="deep-purple darken-2"
+        />
+        <Tile
+          :title="$t('deathsPerOneMillion')"
+          :value="deathsPerOneMillion"
+          color="white lighten-1"
+          icon="mdi-account-group"
+          iconColor="pink darken-2"
         />
       </v-row>
     </v-container>
@@ -144,26 +158,26 @@ export default {
   computed: {
     getSeries: function() {
       const series = {
-        cases: createSeries("Cases", this.historyCases),
-        deaths: createSeries("Deaths", this.historyDeaths),
-        recovered: createSeries("Recovered", this.historyRecovered)
+        cases: createSeries(this.$t("cases"), this.historyCases),
+        deaths: createSeries(this.$t("deaths"), this.historyDeaths),
+        recovered: createSeries(this.$t("recovered"), this.historyRecovered)
       };
       return series;
     },
     getCategories: function() {
       const categories = {
         cases: createCategories(
-          "Confirmed Cases (Linear graph)",
+          this.$t("confirmedCasesLg"),
           this.categories,
           "cases"
         ),
         deaths: createCategories(
-          "Deaths (Linear graph)",
+          this.$t("deathsLg"),
           this.categories,
           "deaths"
         ),
         recovered: createCategories(
-          "Recovered (Linear graph)",
+          this.$t("recoveredLg"),
           this.categories,
           "recovered"
         )
@@ -172,16 +186,19 @@ export default {
     }
   },
   mounted() {
-    const country = this.$route.params.name;
-    this.country = country;
-    Axios.get(`${API_GET_COUNTRIES}/${country}`)
+    const backButtonElem = document.querySelector(".back-float-button");
+    const countryCode = this.$route.params.code;
+    Axios.get(`${API_GET_COUNTRIES}/${countryCode}`)
       .then(response => {
         const data = response.data;
+        this.country = data.country;
         this.cases = data.cases;
         this.deaths = data.deaths;
         this.recovered = data.recovered;
         this.todayCases = data.todayCases;
         this.todayDeaths = data.todayDeaths;
+        this.casesPerOneMillion = data.casesPerOneMillion;
+        this.deathsPerOneMillion = data.deathsPerOneMillion;
         this.countryFlag = data.countryInfo.flag;
         this.loading = false;
         this.error = false;
@@ -191,7 +208,7 @@ export default {
         this.loading = false;
       });
 
-    Axios.get(`${API_GET_COUNTRY_HISTORY}/${country}`)
+    Axios.get(`${API_GET_COUNTRY_HISTORY}/${countryCode}`)
       .then(response => {
         const data = response.data.timeline;
         const historyCases = Object.values(data.cases);
@@ -209,7 +226,7 @@ export default {
         this.error = error;
       });
 
-    if (country.toLowerCase() == "india") {
+    if (countryCode.toLowerCase() == "in") {
       this.showStates = true;
       Axios.get(API_GET_INDIAN_STATES)
         .then(response => {
@@ -224,13 +241,24 @@ export default {
     window.addEventListener("scroll", () => {
       const scrollTop = window.scrollY;
       const defaultTop = 70;
-      const backButtonElem = document.querySelector(".back-float-button");
-      if (scrollTop >= defaultTop / 2) {
-        backButtonElem.classList.add("is-hidden");
+
+      if (window.innerWidth <= 500) {
+        if (scrollTop <= defaultTop) {
+          const newTop = defaultTop - scrollTop;
+          backButtonElem.setAttribute("style", `top:${newTop}px`);
+          backButtonElem.classList.remove("is-hidden");
+        } else {
+          backButtonElem.setAttribute("style", `top:0`);
+          backButtonElem.classList.add("is-hidden");
+        }
       } else {
-        const newTop = defaultTop - scrollTop;
-        backButtonElem.setAttribute("style", `height:${newTop}px`);
-        backButtonElem.classList.remove("is-hidden");
+        if (scrollTop >= defaultTop / 2) {
+          backButtonElem.classList.add("is-hidden");
+        } else {
+          const newTop = defaultTop - scrollTop;
+          backButtonElem.setAttribute("style", `height:${newTop}px`);
+          backButtonElem.classList.remove("is-hidden");
+        }
       }
     });
   }
@@ -264,5 +292,13 @@ export default {
 }
 .country-container {
   min-height: calc(100vh - 136px);
+  .theme--dark.v-icon:focus::after {
+    opacity: 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  .back-float-button {
+    top: 75px;
+  }
 }
 </style>

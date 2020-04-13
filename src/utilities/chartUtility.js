@@ -8,10 +8,16 @@ const colors = {
   todayDeaths: "#DD2C00",
   todayCases: "#1565C0"
 };
-export const createSeries = (collections, limit, increment, order = "desc") => {
+export const createSeries = (
+  collections,
+  limit,
+  increment,
+  seriesName,
+  order = "desc"
+) => {
   const series = [
     {
-      name: increment,
+      name: seriesName,
       data: sortBy(collections, increment, order)
         .map(item => item[increment])
         .slice(0, limit)
@@ -105,10 +111,17 @@ export const createCategories = (
     title: {
       text: titleText,
       align: "center",
-      floating: false
+      floating: false,
+      offsetY: 5
     },
     tooltip: {
       enabled: true,
+      fixed: {
+        enabled: true,
+        position: "right",
+        offsetX: 0,
+        offsetY: 100
+      },
       onDatasetHover: {
         highlightDataSeries: false
       }
@@ -125,9 +138,7 @@ export const createCategories = (
         }
       }
     ],
-    fill: {
-      colors: colors[increment]
-    }
+    colors: [colors[increment]]
   };
   return options;
 };
