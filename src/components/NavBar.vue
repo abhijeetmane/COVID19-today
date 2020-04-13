@@ -35,6 +35,7 @@
   </v-container>
 </template>
 <script>
+import { bus } from "../main";
 export default {
   name: "NavBar",
   data: function() {
@@ -103,7 +104,7 @@ export default {
       this.selectedLang = item.code;
       this.$i18n.locale = item.i18code;
       window.localStorage.setItem("i18code", item.i18code);
-
+      bus.$emit("i18codeChanged");
       /*Change left and width of side bar below active tab*/
       setTimeout(function() {
         const activeTabElm = document.querySelectorAll(".v-tab--active")[0];

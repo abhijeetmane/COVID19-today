@@ -14,7 +14,7 @@ Vue.use(
   },
   router
 );
-
+export const bus = new Vue();
 Vue.component("apexchart", VueApexCharts);
 Vue.config.productionTip = false;
 new Vue({

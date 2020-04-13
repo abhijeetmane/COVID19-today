@@ -10,6 +10,7 @@
 <script>
 import NewsCards from "@/components/NewsCards";
 import { fetchArticles } from "../utilities/factory";
+import { bus } from "../main";
 export default {
   data: function() {
     return {
@@ -65,6 +66,9 @@ export default {
       page_path: "/news"
     });
     this.loadArticles();
+    bus.$on("i18codeChanged", () => {
+      this.loadArticles();
+    });
   }
 };
 </script>
