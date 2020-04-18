@@ -22,6 +22,22 @@
         >
           <v-icon>mdi-chevron-up</v-icon>
         </v-btn>
+        <v-btn
+          fixed
+          dark
+          fab
+          bottom
+          right
+          color="grey darken-3"
+          small
+          href="whatsapp://send?text=Coronavirus Information Dashboared for all countries. https://thecovid19.today/"
+          target="_blank"
+          data-action="share/whatsapp/share"
+          class="share-btn"
+          @click="handleShare"
+        >
+          <v-icon size="18">mdi-share-variant</v-icon>
+        </v-btn>
       </v-content>
       <Footer />
     </div>
@@ -47,12 +63,24 @@ export default {
     countries: []
   }),
   methods: {
+    trackEvent: function(category) {
+      const currentRoute = this.$router.currentRoute.name || "Home";
+      this.$gtag.event(category, {
+        event_category: category,
+        event_label: currentRoute,
+        value: currentRoute
+      });
+    },
     scrollToTop: function() {
       window.scroll({
         top: 0,
         left: 0,
         behavior: "smooth"
       });
+      this.trackEvent("scroll_top");
+    },
+    handleShare: function() {
+      this.trackEvent("share_whatsapp");
     }
   },
   mounted() {
@@ -104,7 +132,15 @@ body,
     margin: 0 3%;
   }
   .scroll-top-btn {
+    bottom: 100px;
+  }
+  .share-btn {
     bottom: 50px;
+  }
+  @media screen and (min-width: 992px) {
+    .share-btn {
+      display: none;
+    }
   }
 }
 </style>

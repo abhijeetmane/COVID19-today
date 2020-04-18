@@ -14,6 +14,21 @@
           :value="total.deaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
+          iconColor="deep-purple darken-2"
+        />
+
+        <Tile
+          :title="$t('newCases')"
+          :value="getNewCases"
+          color="white lighten-1"
+          icon="mdi-ambulance"
+          iconColor="pink darken-2"
+        />
+        <Tile
+          :title="$t('newDeaths')"
+          :value="getNewDeaths"
+          color="white lighten-1"
+          icon="mdi-heart-pulse"
           iconColor="pink darken-2"
         />
         <Tile
@@ -21,21 +36,7 @@
           :value="total.recovered"
           color="white lighten-1"
           icon="mdi-home-heart"
-          iconColor="teal lighten-1"
-        />
-        <Tile
-          :title="$t('newCases')"
-          :value="getNewCases"
-          color="white lighten-1"
-          icon="mdi-ambulance"
-          iconColor="deep-purple lighten-1"
-        />
-        <Tile
-          :title="$t('newDeaths')"
-          :value="getNewDeaths"
-          color="white lighten-1"
-          icon="mdi-heart-pulse"
-          iconColor="pink lighten-1"
+          iconColor="cyan darken-2"
         />
       </v-row>
     </v-container>

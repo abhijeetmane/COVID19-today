@@ -1,0 +1,20 @@
+{
+  "name": "Corona Today",
+  "short_name": "Corona Today",
+  "icons": [
+    {
+      "src": "/img/icons/icon192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/icons/icon512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#558CA5",
+  "theme_color": "#204864"
+}

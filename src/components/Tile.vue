@@ -16,7 +16,7 @@
           </div>
           <div>
             <span class="black--text font-weight-medium v-rating subtitle-2">{{
-              value
+              getValue
             }}</span>
           </div>
         </div>
@@ -27,6 +27,13 @@
 <script>
 export default {
   name: "Tile",
+  computed: {
+    getValue: function() {
+      return new Intl.NumberFormat(this.$i18n.locale || "en").format(
+        this.value
+      );
+    }
+  },
   props: {
     title: String,
     value: Number,

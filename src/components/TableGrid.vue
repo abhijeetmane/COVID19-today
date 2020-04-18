@@ -18,11 +18,11 @@
             :key="item.text"
             @click="changeSort(item.value)"
           >
-            <v-list-item-title
-              >{{ item.text }}
-              <v-icon v-if="sortBy === item.value">{{
-                sortDesc ? "mdi-arrow-down" : "mdi-arrow-up"
-              }}</v-icon>
+            <v-list-item-title>
+              {{ item.text }}
+              <v-icon v-if="sortBy === item.value">
+                {{ sortDesc ? "mdi-arrow-down" : "mdi-arrow-up" }}
+              </v-icon>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -34,66 +34,61 @@
         :placeholder="$t('searchCountry')"
         hide-details
       ></v-text-field>
+      <v-icon
+        size="28"
+        :color="'white lighten-1'"
+        class="show-full-screen"
+        v-on:click="!isFullScreen ? rotateScreen() : stopRotation()"
+        >{{ isFullScreen ? "mdi-fullscreen-exit" : "mdi-fullscreen" }}</v-icon
+      >
     </v-toolbar>
     <v-card color="#f7f7f7">
       <v-card-title>
         <v-row v-resize="onResize">
-          <v-data-table
-            :headers="computedHeaders"
-            :items="countries"
-            :search="search"
-            :items-per-page="countries.length"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            hide-default-footer
-            mobile-breakpoint="0"
-            :fixed-header="true"
-            class="data-table"
-            :footer-props="{
-              showFirstLastPage: false,
-              disablePagination: isMobile,
-              itemsPerPageOptions: [20, 40, countries.length]
-            }"
-          >
-            <template v-slot:item="props">
-              <tr @click="handleClick(props.item)">
-                <td :class="'country-name'">{{ $t(props.item.country) }}</td>
-                <td>{{ props.item.cases }}</td>
-                <td
-                  v-if="!$vuetify.breakpoint.smAndDown"
-                  class="font-weight-bold deep-purple--text lighten-1"
-                >
-                  {{ props.item.todayCases }}
-                </td>
-                <td>{{ props.item.deaths }}</td>
-                <td
-                  v-if="!$vuetify.breakpoint.smAndDown"
-                  class="font-weight-bold pink--text lighten-1"
-                >
-                  {{ props.item.todayDeaths }}
-                </td>
-                <td>{{ props.item.recovered }}</td>
-                <td v-if="!$vuetify.breakpoint.smAndDown">
-                  {{ props.item.active }}
-                </td>
-                <td v-if="!$vuetify.breakpoint.smAndDown">
-                  {{ props.item.critical }}
-                </td>
-                <td
-                  v-if="!$vuetify.breakpoint.smAndDown"
-                  class="font-weight-bold deep-purple--text"
-                >
-                  {{ props.item.casesPerOneMillion }}
-                </td>
-                <td
-                  v-if="!$vuetify.breakpoint.smAndDown"
-                  class="font-weight-bold pink--text"
-                >
-                  {{ props.item.deathsPerOneMillion }}
-                </td>
-              </tr>
-            </template>
-          </v-data-table>
+          <div class="table-container">
+            <v-data-table
+              :headers="computedHeaders"
+              :items="countries"
+              :search="search"
+              :items-per-page="countries.length"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              hide-default-footer
+              mobile-breakpoint="0"
+              :fixed-header="true"
+              class="data-table"
+              :footer-props="{
+                showFirstLastPage: false,
+                disablePagination: isMobile,
+                itemsPerPageOptions: [20, 40, countries.length]
+              }"
+            >
+              <template v-slot:item="props">
+                <tr @click="handleClick(props.item)">
+                  <td :class="'country-name'">{{ $t(props.item.country) }}</td>
+                  <td class="font-weight-bold deep-purple--text lighten-1">
+                    {{ props.item.todayCases }}
+                  </td>
+                  <td>{{ props.item.cases }}</td>
+                  <td class="font-weight-bold pink--text lighten-1">
+                    {{ props.item.todayDeaths }}
+                  </td>
+                  <td>{{ props.item.deaths }}</td>
+                  <td class="font-weight-bold green--text darken-4">
+                    {{ props.item.recovered }}
+                  </td>
+                  <td>{{ props.item.active }}</td>
+                  <td>{{ props.item.critical }}</td>
+                  <td>
+                    {{ props.item.casesPerOneMillion }}
+                  </td>
+                  <td>
+                    {{ props.item.deathsPerOneMillion }}
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+          </div>
         </v-row>
       </v-card-title>
     </v-card>
@@ -112,24 +107,23 @@ export default {
       search: "",
       headers: [
         { text: "country", value: "country" },
+        { text: "newCases", value: "todayCases" },
         { text: "cases", value: "cases" },
-        { text: "newCases", value: "todayCases", hide: "smAndDown" },
+        { text: "newDeaths", value: "todayDeaths" },
         { text: "deaths", value: "deaths" },
-        { text: "newDeaths", value: "todayDeaths", hide: "smAndDown" },
         { text: "recovered", value: "recovered" },
-        { text: "activeCases", value: "active", hide: "smAndDown" },
-        { text: "criticalCases", value: "critical", hide: "smAndDown" },
+        { text: "activeCases", value: "active" },
+        { text: "criticalCases", value: "critical" },
         {
           text: "casesPerOneMillion",
-          value: "casesPerOneMillion",
-          hide: "smAndDown"
+          value: "casesPerOneMillion"
         },
         {
           text: "deathsPerOneMillion",
-          value: "deathsPerOneMillion",
-          hide: "smAndDown"
+          value: "deathsPerOneMillion"
         }
-      ]
+      ],
+      isFullScreen: false
     };
   },
   methods: {
@@ -147,6 +141,41 @@ export default {
         this.sortBy = column;
         this.sortDesc = false;
       }
+    },
+    rotateScreen: function() {
+      let elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+      if (screen.orientation.lock) {
+        screen.orientation
+          .lock("landscape-primary")
+          .then(() => {
+            this.isFullScreen = true;
+          })
+          .catch(error => {
+            alert(error);
+          });
+      }
+    },
+    stopRotation: function() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+      screen.orientation.unlock("natural");
+      this.isFullScreen = false;
     }
   },
   computed: {
@@ -162,6 +191,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.show-full-screen {
+  display: none !important;
+}
 .v-card:not(.v-sheet--tile):not(.v-card--shaped) {
   border-radius: 0;
 }
@@ -170,11 +202,11 @@ export default {
     padding-top: 0;
   }
 }
-.v-data-table {
+.data-table {
   &.v-data-table--fixed-header {
     flex: 1;
   }
-  .v-data-table__wrapper {
+  > .v-data-table__wrapper {
     height: calc(100vh - 160px);
     overflow-y: scroll;
     .v-data-table-header {
@@ -182,6 +214,8 @@ export default {
         th {
           padding: 0 8px;
           font-size: 0.9rem;
+          word-break: break-word;
+          line-height: 1rem;
           .v-icon {
             opacity: 1;
           }
@@ -206,32 +240,40 @@ export default {
   }
 }
 @media screen and (max-width: 600px) {
-  .v-data-table {
-    .v-data-table__wrapper {
-      .v-data-table-header {
-        tr {
-          th {
-            font-size: 0.7rem;
-          }
-        }
-      }
+  .data-table {
+    > .v-data-table__wrapper {
       table {
         tbody {
           tr {
             cursor: pointer;
             td {
-              font-size: 0.7rem;
               &.country-name {
-                max-width: 100px;
-                min-width: 100px;
-                // white-space: pre;
-                // overflow: auto;
+                width: 100px;
               }
             }
           }
         }
       }
     }
+  }
+}
+.table-container {
+  max-width: calc(94vw - 4px);
+  width: calc(94vw - 4px);
+}
+@media screen and (max-width: 992px) {
+  .table-container {
+    max-width: calc(94vw - 4px);
+    overflow-x: auto;
+
+    .v-data-table {
+      width: 992px;
+      max-width: 992px;
+    }
+  }
+  .show-full-screen {
+    display: block !important;
+    padding-left: 16px;
   }
 }
 </style>

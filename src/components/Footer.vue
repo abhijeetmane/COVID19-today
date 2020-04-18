@@ -55,9 +55,9 @@ export default {
   methods: {
     handleFooterClick(key) {
       this.$gtag.event("footer_clicked", {
-        Action: "click",
-        Category: "footer",
-        Label: key
+        event_category: "footer",
+        event_label: key,
+        value: key
       });
     }
   }

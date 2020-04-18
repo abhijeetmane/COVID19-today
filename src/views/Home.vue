@@ -14,14 +14,7 @@
           :value="total.deaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
-          iconColor="pink darken-2"
-        />
-        <Tile
-          :title="$t('recovered')"
-          :value="total.recovered"
-          color="white lighten-1"
-          icon="mdi-home-heart"
-          iconColor="teal lighten-1"
+          iconColor="deep-purple darken-2"
         />
 
         <Tile
@@ -29,14 +22,21 @@
           :value="getNewCases"
           color="white lighten-1"
           icon="mdi-ambulance"
-          iconColor="deep-purple lighten-1"
+          iconColor="pink darken-2"
         />
         <Tile
           :title="$t('newDeaths')"
           :value="getNewDeaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
-          iconColor="pink lighten-1"
+          iconColor="pink darken-2"
+        />
+        <Tile
+          :title="$t('recovered')"
+          :value="total.recovered"
+          color="white lighten-1"
+          icon="mdi-home-heart"
+          iconColor="cyan darken-2"
         />
       </v-row>
     </v-container>
@@ -75,9 +75,9 @@ export default {
         params: { code: item.countryInfo.iso2, name: item.country }
       });
       this.$gtag.event("country_selected", {
-        Action: "click",
-        Category: "country",
-        Label: item.country
+        event_category: "country",
+        event_label: item.country,
+        value: item.country
       });
     }
   },

@@ -68,9 +68,24 @@ export default {
           i18code: "es"
         },
         {
+          code: "EL",
+          name: "Ελληνικά",
+          i18code: "el"
+        },
+        {
           code: "MR",
           name: "मराठी",
           i18code: "mr"
+        },
+        {
+          code: "HI",
+          name: "हिन्दी",
+          i18code: "hi"
+        },
+        {
+          code: "GU",
+          name: "ગુજરાતી",
+          i18code: "gu"
         },
         {
           code: "TA",
@@ -78,9 +93,14 @@ export default {
           i18code: "ta"
         },
         {
-          code: "HI",
-          name: "हिन्दी",
-          i18code: "hi"
+          code: "KN",
+          name: "ಕನ್ನಡ",
+          i18code: "kn"
+        },
+        {
+          code: "TE",
+          name: "తెలుగు",
+          i18code: "te"
         }
       ],
       tabs: [
@@ -115,6 +135,11 @@ export default {
         sideBarElm.style.left = `${sidebarLeft}px`;
         sideBarElm.style.width = `${activeTabWidth}px`;
       });
+      this.$gtag.event("language_changed", {
+        event_category: "language",
+        event_label: item.code,
+        value: item.code
+      });
     }
   }
 };
@@ -137,8 +162,18 @@ export default {
     opacity: 0;
   }
 }
+.nav-tab {
+  font-size: 14px;
+}
+@mixin lang-menu {
+  .v-list.v-sheet.v-sheet--tile {
+    height: 500px;
+    overflow: auto;
+  }
+}
 
 @media screen and (max-width: 321px) {
+  @include lang-menu;
   .v-slide-group__content.v-tabs-bar__content {
     .v-tab {
       padding: 0;
@@ -146,22 +181,19 @@ export default {
     }
   }
   .nav-tab {
-    font-size: 8px;
-    &.lang-MR,
-    &.lang-TA,
-    &.lang-HI,
-    &.lang-EN,
-    &.lang-ES {
-      font-size: 12px;
-    }
-    &.lang-FR,
-    &.lang-DE {
+    &.lang-NL,
+    &.lang-DE,
+    &.lang-FR {
       font-size: 10px;
+    }
+    &.lang-TA {
+      font-size: 11px;
     }
   }
 }
 
-@media screen and (min-width: 321px) and (max-width: 374px) {
+@media screen and (min-width: 321px) and (max-width: 375px) {
+  @include lang-menu;
   .v-slide-group__content.v-tabs-bar__content {
     .v-tab {
       padding: 0;
@@ -169,23 +201,27 @@ export default {
     }
   }
   .nav-tab {
-    font-size: 10px;
-    &.lang-MR,
-    &.lang-TA,
-    &.lang-HI,
-    &.lang-EN,
-    &.lang-ES {
+    &.lang-NL,
+    &.lang-DE,
+    &.lang-FR {
       font-size: 12px;
     }
-    &.lang-FR,
-    &.lang-DE {
-      font-size: 10px;
+    &.lang-TA {
+      font-size: 12px;
     }
   }
 }
-@media screen and (min-width: 375px) and (max-width: 600px) {
+
+@media screen and (min-width: 768px) {
   .nav-tab {
-    font-size: 12px;
+    &.lang-MR,
+    &.lang-HI,
+    &.lang-GU,
+    &.lang-TA,
+    &.lang-TE,
+    &.lang-KN {
+      font-size: 18px;
+    }
   }
 }
 </style>

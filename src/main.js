@@ -5,6 +5,7 @@ import vuetify from "./plugins/vuetify";
 import VueApexCharts from "vue-apexcharts";
 import VueGtag from "vue-gtag";
 import i18n from "./i18n";
+import "./registerServiceWorker";
 
 const GA_MEASUREMENT_ID = process.env.VUE_APP_GA_MEASUREMENT_ID;
 Vue.use(

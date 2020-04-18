@@ -1,8 +1,8 @@
 {
-  "cases": "Total Cases",
+  "cases": "Confirmed Cases",
   "activeCases": "Active Cases",
   "newCases": "New Cases",
-  "deaths": "Total Deaths",
+  "deaths": "Confirmed Deaths",
   "newDeaths": "New Deaths",
   "recovered": "Recovered",
   "country": "Country",
@@ -10,15 +10,15 @@
   "searchCountry": "Search Country",
   "searchState": "Search States",
   "states":"States",
-  "totalCases": "Total Cases",
+  "totalCases": "Confirmed Cases",
   "totalActiveCases": "Total Active Cases",
-  "totalDeaths": "Total Deaths",
+  "totalDeaths": "Confirmed Deaths",
   "totalRecovered": "Total Recovered Cases",
   "totalCritical": "Total Critical Cases",
   "total":"Total",
   "Total":"Total",
-  "todaysCases": "Today's Reported Cases",
-  "todaysDeaths": "Today's Reported Deaths",
+  "todaysCases": "New Cases",
+  "todaysDeaths": "New Deaths",
   "confirmedCasesLg": "Confirmed Cases (Linear graph)",
   "deathsLg": "Deaths (Linear graph)",
   "recoveredLg": "Recovered (Linear graph)",
@@ -29,5 +29,6 @@
   "Graphs":"Graphs",
   "News":"News",
   "deathsPerOneMillion":"Deaths Per 1 Million",
-  "casesPerOneMillion":"Cases Per 1 Million"
+  "casesPerOneMillion":"Cases Per 1 Million",
+  "distName":"District"
 }

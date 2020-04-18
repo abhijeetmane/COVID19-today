@@ -36,6 +36,21 @@
           :value="deaths"
           color="white lighten-1"
           icon="mdi-heart-pulse"
+          iconColor="deep-purple darken-2"
+        />
+
+        <Tile
+          :title="$t('todaysCases')"
+          :value="todayCases"
+          color="white lighten-1"
+          icon="mdi-ambulance"
+          iconColor="pink darken-2"
+        />
+        <Tile
+          :title="$t('todaysDeaths')"
+          :value="todayDeaths"
+          color="white lighten-1"
+          icon="mdi-heart-pulse"
           iconColor="pink darken-2"
         />
         <Tile
@@ -43,21 +58,7 @@
           :value="recovered"
           color="white lighten-1"
           icon="mdi-home-heart"
-          iconColor="teal lighten-1"
-        />
-        <Tile
-          :title="$t('todaysCases')"
-          :value="todayCases"
-          color="white lighten-1"
-          icon="mdi-ambulance"
-          iconColor="deep-purple lighten-1"
-        />
-        <Tile
-          :title="$t('todaysDeaths')"
-          :value="todayDeaths"
-          color="white lighten-1"
-          icon="mdi-heart-pulse"
-          iconColor="pink lighten-1"
+          iconColor="cyan darken-2"
         />
         <Tile
           :title="$t('casesPerOneMillion')"
@@ -96,7 +97,11 @@
           :barHeight="barHeight"
         />
       </v-row>
-      <IndiaTableGrid :states="indianStates" v-if="showStates" />
+      <IndiaTableGrid
+        :states="indianStates"
+        :indianDistricts="indianDistricts"
+        v-if="showStates"
+      />
     </div>
   </div>
 </template>
@@ -111,7 +116,8 @@ import IndiaTableGrid from "@/components/IndiaTableGrid";
 import {
   API_GET_COUNTRIES,
   API_GET_COUNTRY_HISTORY,
-  API_GET_INDIAN_STATES
+  API_GET_INDIAN_STATES,
+  API_GET_INDIAN_STATES_DISTRICTS
 } from "@/utilities/apis";
 import Axios from "axios";
 export default {
@@ -131,18 +137,21 @@ export default {
     recovered: null,
     todayCases: null,
     todayDeaths: null,
+    casesPerOneMillion: null,
+    deathsPerOneMillion: null,
     historyCases: null,
     historyDeaths: null,
     historyRecovered: null,
     categories: [],
     indianStates: [],
+    indianDistricts: {},
     showStates: false,
     barWidth: 350,
     barHeight: 350
   }),
   methods: {
     handleBack: function() {
-      this.$router.go(-1);
+      this.$router.push({ name: "Home" });
     },
     onResize() {
       const windowWidth = window.outerWidth;
@@ -226,13 +235,24 @@ export default {
         this.error = error;
       });
 
-    if (countryCode.toLowerCase() == "in") {
+    if (
+      countryCode.toLowerCase() == "in" ||
+      countryCode.toLowerCase() == "india"
+    ) {
       this.showStates = true;
       Axios.get(API_GET_INDIAN_STATES)
         .then(response => {
           const states = response.data.statewise;
           const indianStates = sortBy(states, "confirmed");
           this.indianStates = indianStates;
+        })
+        .catch(error => {
+          this.error = error;
+        });
+
+      Axios.get(API_GET_INDIAN_STATES_DISTRICTS)
+        .then(response => {
+          this.indianDistricts = response.data;
         })
         .catch(error => {
           this.error = error;
