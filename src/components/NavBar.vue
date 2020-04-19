@@ -68,6 +68,11 @@ export default {
           i18code: "es"
         },
         {
+          code: "PT",
+          name: "Português",
+          i18code: "pt"
+        },
+        {
           code: "MR",
           name: "मराठी",
           i18code: "mr"
