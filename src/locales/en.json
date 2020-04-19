@@ -5,6 +5,7 @@
   "deaths": "Confirmed Deaths",
   "newDeaths": "New Deaths",
   "recovered": "Recovered",
+  "newRecovered":"New Recovered",
   "country": "Country",
   "criticalCases": "Critical Cases",
   "searchCountry": "Search Country",

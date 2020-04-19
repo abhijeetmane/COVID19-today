@@ -70,8 +70,12 @@ export default {
   },
   methods: {
     navigateCountry: function(item) {
+      let routeName = "Country";
+      if (item.countryInfo.iso2.toLowerCase() == "in") {
+        routeName = "CountryIndia";
+      }
       this.$router.push({
-        name: "Country",
+        name: routeName,
         params: { code: item.countryInfo.iso2, name: item.country }
       });
       this.$gtag.event("country_selected", {

@@ -5,6 +5,7 @@
     "deaths": "మొత్తం మరణాలు",
     "newDeaths": "కొత్త మరణాలు",
     "recovered": "మొత్తం కోలుకుంది",
+    "newRecovered":"నేడు మొత్తం కోలుకుంది",
     "country": "దేశం",
     "criticalCases": "క్లిష్టమైన కేసులు",
     "searchCountry": "సెర్చ్ కంట్రీ",

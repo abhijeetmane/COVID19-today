@@ -44,7 +44,7 @@
     </v-toolbar>
     <v-card color="#f7f7f7">
       <v-card-title>
-        <v-row v-resize="onResize">
+        <v-row>
           <div class="table-container">
             <v-data-table
               :headers="computedHeaders"
@@ -57,11 +57,6 @@
               mobile-breakpoint="0"
               :fixed-header="true"
               class="data-table"
-              :footer-props="{
-                showFirstLastPage: false,
-                disablePagination: isMobile,
-                itemsPerPageOptions: [20, 40, countries.length]
-              }"
             >
               <template v-slot:item="props">
                 <tr @click="handleClick(props.item)">
@@ -103,7 +98,6 @@ export default {
     return {
       sortBy: "cases",
       sortDesc: true,
-      isMobile: this.checkMobile,
       search: "",
       headers: [
         { text: "country", value: "country" },
@@ -130,10 +124,6 @@ export default {
     handleClick: function(item) {
       this.$emit("navigateCountry", item);
     },
-    onResize() {
-      if (window.innerWidth < 769) this.isMobile = true;
-      else this.isMobile = false;
-    },
     changeSort(column) {
       if (this.sortBy === column) {
         this.sortDesc = !this.sortDesc;
@@ -141,6 +131,7 @@ export default {
         this.sortBy = column;
         this.sortDesc = false;
       }
+      this.resetTableScroll();
     },
     rotateScreen: function() {
       let elem = document.documentElement;
@@ -159,8 +150,8 @@ export default {
           .then(() => {
             this.isFullScreen = true;
           })
-          .catch(error => {
-            alert(error);
+          .catch(() => {
+            alert("Full screen not possible in this device.");
           });
       }
     },
@@ -176,17 +167,26 @@ export default {
       }
       screen.orientation.unlock("natural");
       this.isFullScreen = false;
+    },
+    resetTableScroll: function() {
+      document.getElementsByClassName("v-data-table__wrapper")[0].scrollTop = 0;
+      this.$gtag.event("country_sorted", {
+        event_category: "country_sorted",
+        event_label: this.sortBy,
+        value: this.sortBy
+      });
     }
   },
   computed: {
-    checkMobile: function() {
-      return window.innerWidth < 769;
-    },
     computedHeaders() {
-      return this.headers
-        .filter(h => !h.hide || !this.$vuetify.breakpoint[h.hide])
-        .map(h => ({ ...h, text: this.$t(h.text) }));
+      return this.headers.map(h => ({ ...h, text: this.$t(h.text) }));
     }
+  },
+  mounted() {
+    this.isFullScreen = document.fullscreen;
+    document.getElementsByTagName("thead")[0].addEventListener("click", () => {
+      this.resetTableScroll();
+    });
   }
 };
 </script>
@@ -212,10 +212,11 @@ export default {
     .v-data-table-header {
       tr {
         th {
-          padding: 0 8px;
+          padding: 2px 8px;
           font-size: 0.9rem;
           word-break: break-word;
           line-height: 1rem;
+          min-width: 80px;
           .v-icon {
             opacity: 1;
           }
@@ -239,6 +240,10 @@ export default {
     }
   }
 }
+.table-container {
+  max-width: calc(94vw - 4px);
+  width: calc(94vw - 4px);
+}
 @media screen and (max-width: 600px) {
   .data-table {
     > .v-data-table__wrapper {
@@ -257,14 +262,12 @@ export default {
     }
   }
 }
-.table-container {
-  max-width: calc(94vw - 4px);
-  width: calc(94vw - 4px);
-}
+
 @media screen and (max-width: 992px) {
   .table-container {
     max-width: calc(94vw - 4px);
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 
     .v-data-table {
       width: 992px;

@@ -70,9 +70,9 @@
                   {{ item.deltadeaths }}
                 </span>
               </template>
-              <template v-slot:item.recovered="{ item }">
+              <template v-slot:item.deltarecovered="{ item }">
                 <span class="font-weight-bold green--text darken-4">
-                  {{ item.recovered }}
+                  {{ item.deltarecovered }}
                 </span>
               </template>
               <template v-slot:expanded-item>
@@ -117,6 +117,7 @@ export default {
         { text: "cases", value: "confirmed" },
         { text: "newDeaths", value: "deltadeaths" },
         { text: "deaths", value: "deaths" },
+        { text: "newRecovered", value: "deltarecovered" },
         { text: "recovered", value: "recovered" },
         { text: "activeCases", value: "active" }
       ],
@@ -135,6 +136,15 @@ export default {
         this.sortBy = column;
         this.sortDesc = false;
       }
+      this.resetTableScroll();
+    },
+    resetTableScroll: function() {
+      document.getElementsByClassName("v-data-table__wrapper")[0].scrollTop = 0;
+      this.$gtag.event("states_sorted", {
+        event_category: "states_sorted",
+        event_label: this.sortBy,
+        value: this.sortBy
+      });
     }
   },
   computed: {
@@ -157,6 +167,11 @@ export default {
         return districts;
       } else return [];
     }
+  },
+  mounted() {
+    document.getElementsByTagName("thead")[0].addEventListener("click", () => {
+      this.resetTableScroll();
+    });
   }
 };
 </script>
@@ -185,10 +200,16 @@ export default {
     display: none;
   }
   > .v-data-table {
-    > .v-data-table__wrapper table tbody tr .state-name {
-      border-width: 0;
-      padding: 0;
-      color: #337ab7;
+    > .v-data-table__wrapper table tbody tr {
+      .state-name {
+        border-width: 0;
+        padding: 0;
+        color: #337ab7;
+      }
+      .mdi-chevron-down,
+      .mdi-chevron-up {
+        width: 24px;
+      }
     }
   }
 }
@@ -200,7 +221,7 @@ export default {
   .table-container-india {
     max-width: calc(94vw - 4px);
     overflow-x: auto;
-
+    -webkit-overflow-scrolling: touch;
     > .v-data-table {
       width: 768px;
       max-width: 768px;

@@ -19,6 +19,15 @@ const routes = [
       import(/* webpackChunkName: "Charts" */ "../views/Graphs.vue")
   },
   {
+    path: "/country/:code",
+    name: "CountryIndia",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "CountryIndia" */ "../views/CountryIndia.vue")
+  },
+  {
     path: "/countries/:code",
     name: "Country",
     // route level code-splitting

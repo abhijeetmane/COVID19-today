@@ -5,6 +5,7 @@
   "deaths":"Totaal Sterfgevallen",
   "newDeaths":"Nieuw Gemelde Sterfgevallen",
   "recovered":"Hersteld",
+  "newRecovered":"Nieuw Hersteld",
   "country":"Land",
   "criticalCases":"Kritieke Gevallen",
   "searchCountry":"Zoek op Land",
