@@ -56,10 +56,9 @@
               :single-expand="true"
             >
               <template v-slot:item.state="{ item }">
-                <td class="state-name">
-                  {{ item.state }}
-                </td>
+                <td class="state-name">{{ $t(item.state) }}</td>
               </template>
+
               <template v-slot:item.deltaconfirmed="{ item }">
                 <span class="font-weight-bold deep-purple--text lighten-1">
                   {{ item.deltaconfirmed }}
@@ -78,7 +77,7 @@
               <template v-slot:expanded-item>
                 <td colspan="10" class="district-data-table">
                   <v-data-table
-                    :headers="distHeaders"
+                    :headers="computedDistHeaders"
                     :items="checkExpanded"
                     item-key="distName"
                     fixed-header
@@ -122,9 +121,9 @@ export default {
         { text: "activeCases", value: "active" }
       ],
       distHeaders: [
-        { text: this.$t("distName"), value: "distName" },
-        { text: this.$t("newCases"), value: "newCases" },
-        { text: this.$t("cases"), value: "confirmed" }
+        { text: "distName", value: "distName" },
+        { text: "newCases", value: "newCases" },
+        { text: "cases", value: "confirmed" }
       ]
     };
   },
@@ -150,6 +149,9 @@ export default {
   computed: {
     computedHeaders() {
       return this.headers.map(h => ({ ...h, text: this.$t(h.text) }));
+    },
+    computedDistHeaders() {
+      return this.distHeaders.map(h => ({ ...h, text: this.$t(h.text) }));
     },
     checkExpanded() {
       if (this.expanded.length > 0 && this.expanded[0].state) {
